@@ -1,0 +1,50 @@
+---
+title: "MPG"
+author: "Steven Orgill"
+date: "11/1/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries
+```{r}
+library(ggplot2)
+```
+
+Read in MPG data
+```{r}
+mpg <- read.table("https://mheaton.byu.edu/Courses/Stat330/InClassAnalyses/1%20-%20CarMPG/Data/MPGData.txt", header = TRUE)
+head(mpg)
+dim(mpg)
+```
+
+Scatterplot of the data
+```{r}
+ggplot(mpg, aes(x=Weight, y=MPG)) + geom_point()
+```
+
+Correlation between Weight and MPG
+```{r}
+cor(mpg$Weight, mpg$MPG)
+```
+
+Fit a Simple Linear Model
+```{r}
+slr <- lm(MPG~Weight, data = mpg)
+summary(slr)
+```
+
+Plot fitted regression line on the scatterplot
+```{r}
+ggplot(mpg, aes(x = Weight, y = MPG)) + geom_point() + geom_smooth(method = "lm", se = FALSE)
+```
+
+Predict the MPG for cars that weight 3000 and 20000 pounds (note the 20000 is extrapolation of our data)
+```{r}
+pred_df <- data.frame(Weight = c(3000, 20000))
+predict.lm(slr, pred_df)
+```
+
